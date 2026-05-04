@@ -4,8 +4,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
-import { CalendarDays, CheckCircle2 } from "lucide-react";
+import { CalendarDays, CheckCircle2, Video, Phone, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+const consultationTypes = [
+  { id: "video", label: "Video", icon: Video },
+  { id: "audio", label: "Audio", icon: Phone },
+  { id: "in-person", label: "In-person", icon: MapPin },
+] as const;
+
+type ConsultationTypeId = typeof consultationTypes[number]["id"];
 
 const doctors = [
   "Dr. Sarah Johnson - Cardiologist",

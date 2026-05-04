@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Heart } from "lucide-react";
 
@@ -33,8 +34,8 @@ const Navbar = () => {
           ))}
         </div>
         <div className="hidden lg:flex items-center gap-3">
-          <Button variant="outline" size="sm">Login</Button>
-          <Button size="sm">Sign Up</Button>
+          <Button asChild variant="outline" size="sm"><Link to="/login">Login</Link></Button>
+          <Button asChild size="sm"><Link to="/signup">Sign Up</Link></Button>
         </div>
 
         {/* Mobile toggle */}
@@ -52,8 +53,8 @@ const Navbar = () => {
             </a>
           ))}
           <div className="flex gap-2 pt-2">
-            <Button variant="outline" size="sm" className="flex-1">Login</Button>
-            <Button size="sm" className="flex-1">Sign Up</Button>
+            <Button asChild variant="outline" size="sm" className="flex-1"><Link to="/login" onClick={() => setOpen(false)}>Login</Link></Button>
+            <Button asChild size="sm" className="flex-1"><Link to="/signup" onClick={() => setOpen(false)}>Sign Up</Link></Button>
           </div>
         </div>
       )}

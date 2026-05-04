@@ -87,12 +87,37 @@ const BookingSection = () => {
           <div className="bg-background rounded-xl border border-border p-6 shadow-card space-y-5">
             <div className="space-y-2">
               <Label>Select Doctor</Label>
-              <Select>
+              <Select value={doctor} onValueChange={setDoctor}>
                 <SelectTrigger><SelectValue placeholder="Choose a doctor" /></SelectTrigger>
                 <SelectContent>
                   {doctors.map((d) => <SelectItem key={d} value={d}>{d}</SelectItem>)}
                 </SelectContent>
               </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Consultation Type</Label>
+              <div className="grid grid-cols-3 gap-2">
+                {consultationTypes.map((t) => {
+                  const Icon = t.icon;
+                  const active = consultationType === t.id;
+                  return (
+                    <button
+                      key={t.id}
+                      type="button"
+                      onClick={() => setConsultationType(t.id)}
+                      className={cn(
+                        "flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-lg text-sm font-medium border transition-all",
+                        active
+                          ? "gradient-primary text-primary-foreground border-transparent"
+                          : "bg-background text-muted-foreground border-border hover:border-primary"
+                      )}
+                    >
+                      <Icon className="w-5 h-5" />
+                      {t.label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
             <div className="space-y-2">
               <Label>Select Time</Label>

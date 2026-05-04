@@ -4,14 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, Heart } from "lucide-react";
 
 const navLinks = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Doctors", href: "#doctors" },
-  { label: "Consult", href: "#consultation" },
-  { label: "Book Appointment", href: "#booking" },
-  { label: "Emergency", href: "#emergency" },
-  { label: "Health Tips", href: "#tips" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", to: "/" },
+  { label: "About", to: "/about" },
+  { label: "Doctors", to: "/doctors" },
+  { label: "Consult", to: "/consult" },
+  { label: "Book", to: "/booking" },
+  { label: "Symptom AI", to: "/symptom-checker" },
+  { label: "Emergency", to: "/emergency" },
+  { label: "Health Tips", to: "/health-tips" },
+  { label: "Pricing", to: "/pricing" },
+  { label: "Contact", to: "/contact" },
 ];
 
 const Navbar = () => {
@@ -20,17 +22,17 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-lg border-b border-border">
       <div className="container mx-auto flex items-center justify-between h-16 px-4">
-        <a href="#home" className="flex items-center gap-2 font-heading font-bold text-xl text-primary">
+        <Link to="/" className="flex items-center gap-2 font-heading font-bold text-xl text-primary">
           <Heart className="w-6 h-6 fill-primary text-primary-foreground" />
           Smart Telehealth
-        </a>
+        </Link>
 
         {/* Desktop */}
-        <div className="hidden lg:flex items-center gap-6">
+        <div className="hidden lg:flex items-center gap-5">
           {navLinks.map((l) => (
-            <a key={l.href} href={l.href} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+            <Link key={l.to} to={l.to} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
               {l.label}
-            </a>
+            </Link>
           ))}
         </div>
         <div className="hidden lg:flex items-center gap-3">
@@ -39,7 +41,7 @@ const Navbar = () => {
         </div>
 
         {/* Mobile toggle */}
-        <button className="lg:hidden text-foreground" onClick={() => setOpen(!open)}>
+        <button className="lg:hidden text-foreground" onClick={() => setOpen(!open)} aria-label="Toggle menu">
           {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
@@ -48,9 +50,9 @@ const Navbar = () => {
       {open && (
         <div className="lg:hidden bg-card border-b border-border px-4 pb-4 space-y-2">
           {navLinks.map((l) => (
-            <a key={l.href} href={l.href} onClick={() => setOpen(false)} className="block py-2 text-sm font-medium text-muted-foreground hover:text-primary">
+            <Link key={l.to} to={l.to} onClick={() => setOpen(false)} className="block py-2 text-sm font-medium text-muted-foreground hover:text-primary">
               {l.label}
-            </a>
+            </Link>
           ))}
           <div className="flex gap-2 pt-2">
             <Button asChild variant="outline" size="sm" className="flex-1"><Link to="/login" onClick={() => setOpen(false)}>Login</Link></Button>

@@ -4,8 +4,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
-import { CalendarDays, CheckCircle2 } from "lucide-react";
+import { CalendarDays, CheckCircle2, Video, Phone, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+const consultationTypes = [
+  { id: "video", label: "Video", icon: Video },
+  { id: "audio", label: "Audio", icon: Phone },
+  { id: "in-person", label: "In-person", icon: MapPin },
+] as const;
+
+type ConsultationTypeId = typeof consultationTypes[number]["id"];
 
 const doctors = [
   "Dr. Sarah Johnson - Cardiologist",
@@ -21,7 +29,11 @@ const timeSlots = ["09:00 AM", "10:00 AM", "11:00 AM", "01:00 PM", "02:00 PM", "
 const BookingSection = () => {
   const [date, setDate] = useState<Date | undefined>();
   const [time, setTime] = useState("");
+  const [doctor, setDoctor] = useState("");
+  const [consultationType, setConsultationType] = useState<ConsultationTypeId>("video");
   const [booked, setBooked] = useState(false);
+
+  const selectedType = consultationTypes.find((t) => t.id === consultationType);
 
   if (booked) {
     return (
@@ -29,6 +41,20 @@ const BookingSection = () => {
         <div className="container mx-auto px-4 max-w-lg text-center space-y-6">
           <CheckCircle2 className="w-20 h-20 text-accent mx-auto" />
           <h2 className="text-3xl font-heading font-bold text-foreground">Appointment Confirmed!</h2>
+          <div className="bg-background border border-border rounded-xl p-6 text-left space-y-2 shadow-card">
+            {doctor && <p className="text-sm"><span className="text-muted-foreground">Doctor:</span> <span className="font-medium text-foreground">{doctor}</span></p>}
+            {date && <p className="text-sm"><span className="text-muted-foreground">Date:</span> <span className="font-medium text-foreground">{date.toLocaleDateString()}</span></p>}
+            {time && <p className="text-sm"><span className="text-muted-foreground">Time:</span> <span className="font-medium text-foreground">{time}</span></p>}
+            {selectedType && (
+              <p className="text-sm flex items-center gap-2">
+                <span className="text-muted-foreground">Type:</span>
+                <span className="font-medium text-foreground inline-flex items-center gap-1.5">
+                  <selectedType.icon className="w-4 h-4 text-primary" />
+                  {selectedType.label}
+                </span>
+              </p>
+            )}
+          </div>
           <p className="text-muted-foreground">We've sent the details to your email. See you soon!</p>
           <Button onClick={() => setBooked(false)} variant="outline">Book Another</Button>
         </div>
@@ -61,12 +87,37 @@ const BookingSection = () => {
           <div className="bg-background rounded-xl border border-border p-6 shadow-card space-y-5">
             <div className="space-y-2">
               <Label>Select Doctor</Label>
-              <Select>
+              <Select value={doctor} onValueChange={setDoctor}>
                 <SelectTrigger><SelectValue placeholder="Choose a doctor" /></SelectTrigger>
                 <SelectContent>
                   {doctors.map((d) => <SelectItem key={d} value={d}>{d}</SelectItem>)}
                 </SelectContent>
               </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Consultation Type</Label>
+              <div className="grid grid-cols-3 gap-2">
+                {consultationTypes.map((t) => {
+                  const Icon = t.icon;
+                  const active = consultationType === t.id;
+                  return (
+                    <button
+                      key={t.id}
+                      type="button"
+                      onClick={() => setConsultationType(t.id)}
+                      className={cn(
+                        "flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-lg text-sm font-medium border transition-all",
+                        active
+                          ? "gradient-primary text-primary-foreground border-transparent"
+                          : "bg-background text-muted-foreground border-border hover:border-primary"
+                      )}
+                    >
+                      <Icon className="w-5 h-5" />
+                      {t.label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
             <div className="space-y-2">
               <Label>Select Time</Label>

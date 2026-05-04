@@ -29,7 +29,11 @@ const timeSlots = ["09:00 AM", "10:00 AM", "11:00 AM", "01:00 PM", "02:00 PM", "
 const BookingSection = () => {
   const [date, setDate] = useState<Date | undefined>();
   const [time, setTime] = useState("");
+  const [doctor, setDoctor] = useState("");
+  const [consultationType, setConsultationType] = useState<ConsultationTypeId>("video");
   const [booked, setBooked] = useState(false);
+
+  const selectedType = consultationTypes.find((t) => t.id === consultationType);
 
   if (booked) {
     return (
@@ -37,6 +41,20 @@ const BookingSection = () => {
         <div className="container mx-auto px-4 max-w-lg text-center space-y-6">
           <CheckCircle2 className="w-20 h-20 text-accent mx-auto" />
           <h2 className="text-3xl font-heading font-bold text-foreground">Appointment Confirmed!</h2>
+          <div className="bg-background border border-border rounded-xl p-6 text-left space-y-2 shadow-card">
+            {doctor && <p className="text-sm"><span className="text-muted-foreground">Doctor:</span> <span className="font-medium text-foreground">{doctor}</span></p>}
+            {date && <p className="text-sm"><span className="text-muted-foreground">Date:</span> <span className="font-medium text-foreground">{date.toLocaleDateString()}</span></p>}
+            {time && <p className="text-sm"><span className="text-muted-foreground">Time:</span> <span className="font-medium text-foreground">{time}</span></p>}
+            {selectedType && (
+              <p className="text-sm flex items-center gap-2">
+                <span className="text-muted-foreground">Type:</span>
+                <span className="font-medium text-foreground inline-flex items-center gap-1.5">
+                  <selectedType.icon className="w-4 h-4 text-primary" />
+                  {selectedType.label}
+                </span>
+              </p>
+            )}
+          </div>
           <p className="text-muted-foreground">We've sent the details to your email. See you soon!</p>
           <Button onClick={() => setBooked(false)} variant="outline">Book Another</Button>
         </div>
